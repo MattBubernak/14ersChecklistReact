@@ -12,6 +12,8 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import IconButton from 'material-ui/IconButton';
+import Slide from 'material-ui/transitions/Slide';
+
 
 import {
   FormLabel,
@@ -105,6 +107,7 @@ class MountainCheckDialog extends React.Component {
             <ModeEditIcon />
           </IconButton>
           <Dialog
+            transition={Slide}
             open={this.state.open}
             onClose={this.handleClose}>
             <DialogTitle id="simple-dialog-title">{this.props.mountain.name}</DialogTitle>
@@ -161,6 +164,9 @@ class MountainCheckDialog extends React.Component {
                 </FormControl>
               </DialogContent>
               <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Close
+                </Button>
                 <Button onClick={this.handleSave} color="primary">
                   Save
                 </Button>

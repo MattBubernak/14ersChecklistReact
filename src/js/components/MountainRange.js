@@ -36,6 +36,17 @@ class MountainRange extends React.Component {
     //MountainStore.addChangeListener(this._onChange);
   }
 
+  getCompletedCount() {
+    var completed =  Object.values(this.props.mountainRange.mountains).reduce( function(acc, mountain) {
+        acc += (mountain.check && mountain.check.checked) ? 1 : 0;
+        return acc;
+        }
+      , 0)
+    var total = Object.keys(this.props.mountainRange.mountains).length;
+    return completed + "/" + total
+  }
+
+
   // componentWillUnmount() {
   //   MountainStore.removeChangeListener(this._onChange);
   // }
@@ -45,7 +56,7 @@ class MountainRange extends React.Component {
     return (
       <div>
         <Card className={classes.card} key={this.props.mountainRange.name}>
-          <CardHeader title={this.props.mountainRange.name}/>
+          <CardHeader title={this.props.mountainRange.name + " " + this.getCompletedCount() }/>
           <CardMedia
             className={classes.media}
             image={require('../../images/' + this.props.mountainRange.name.replace(/ /g,"_").toLowerCase() + '.jpg')}
