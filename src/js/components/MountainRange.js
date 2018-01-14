@@ -61,7 +61,7 @@ class MountainRange extends React.Component {
             className={classes.media}
             image={require('../../images/' + this.props.mountainRange.name.replace(/ /g,"_").toLowerCase() + '.jpg')}
           />
-          <CardContent>
+          <CardContent style={{padding: '0px', overflow: 'auto', height: '300px'}}>
             <MountainList mountains={this.props.mountainRange.mountains} user={this.props.user}/>
           </CardContent>
         </Card>

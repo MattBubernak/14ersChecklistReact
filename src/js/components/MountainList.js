@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
+import AcUnit from 'material-ui-icons/AcUnit'
 
 
 const styles = theme => ({
@@ -46,6 +47,9 @@ class MountainList extends React.Component {
 						return (<ListItem dense button key={key}>
 											<MountainCheckbox id={key} user={this.props.user} name={this.props.mountains[key].name} check={this.props.mountains[key].check}/>
 											{this.props.mountains[key].elevation}
+											{ (this.props.mountains[key].check && this.props.mountains[key].check.winter) &&
+											  <AcUnit style={{'display': 'inline-flex', 'vertical-align': 'middle', 'width': '20px', 'height': '20px'}}/>
+											}
 											<ListItemSecondaryAction>
 											  <MountainCheckDialog id={key} user={this.props.user} mountain={this.props.mountains[key]} />
 											</ListItemSecondaryAction>

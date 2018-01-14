@@ -3,8 +3,19 @@ import React from 'react';
 // import MountainActions from '../actions/MountainActions';
 import MountainRange from './MountainRange';
 import firebase, { auth, provider } from '../../firebase.js';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Grid from 'material-ui/Grid';
+import SwipeableViews from 'react-swipeable-views';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import AppBar from 'material-ui/AppBar';
+import Typography from 'material-ui/Typography';
+
+function TabContainer({ children, dir }) {
+  return (
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
 
 const styles = {
   root: {
@@ -29,6 +40,7 @@ class MountainGroups extends React.Component {
     this.state = {
       mountains: {},
       userChecks: {},
+      value: 0
     };
 
   }
@@ -55,16 +67,29 @@ class MountainGroups extends React.Component {
     this.retrieveUserChecks(newProps.user);
   }
 
+  handleChange = (event, value) => {
+    var newState = this.state
+    newState.value = value
+    this.setState(newState);
+  };
+
+  handleChangeIndex = index => {
+    var newState = this.state
+    newState.value = index
+    this.setState(newState);
+  };
+
+
   retrieveUserChecks(user) {
     if (user == undefined) {
-      this.setState({ mountains: this.state.mountains, userChecks: {}})
+      this.setState({ value: this.state.value, mountains: this.state.mountains, userChecks: {}})
       return;
     }
     let userChecks = firebase.database().ref('userChecks/' + user.uid);
     userChecks.on('value', (snapshot) => {
       let userChecks = snapshot.val() == undefined ? {} : snapshot.val();
 
-      this.setState({ mountains: this.state.mountains, userChecks: userChecks });
+      this.setState({ value: this.state.value,  mountains: this.state.mountains, userChecks: userChecks });
     })
   }
 
@@ -72,7 +97,7 @@ class MountainGroups extends React.Component {
     let mountainRef = firebase.database().ref('mountains');
     mountainRef.on('value', (snapshot) => {
       let mountains = snapshot.val();
-      this.setState({ mountains: mountains, userChecks: this.state.userChecks });
+      this.setState({ value: this.state.value,  mountains: mountains, userChecks: this.state.userChecks });
     })
   }
 
@@ -82,12 +107,30 @@ class MountainGroups extends React.Component {
 
   render() {
     return (
-      <div className={styles.root}>
-        <Grid container spacing={24} justify='center'>
-          {Object.values(this.mountainsGroupedByRangeWithCheck()).map((mountainRange) => {
-            return (<Grid item xs={12} md={6} sm={12} lg={3}><MountainRange key={mountainRange.name} mountainRange={mountainRange} user={this.props.user}/></Grid>);
-          })}
-        </Grid>
+      <div>
+        <div>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              fullWidth
+            >
+              {Object.values(this.mountainsGroupedByRangeWithCheck()).map((mountainRange) => {
+                return (<Tab label={mountainRange.name} />)
+              })}
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            index={this.state.value}
+            onChangeIndex={this.handleChangeIndex}
+          >
+            {Object.values(this.mountainsGroupedByRangeWithCheck()).map((mountainRange) => {
+              return (<TabContainer><MountainRange key={mountainRange.name} mountainRange={mountainRange} user={this.props.user}/></TabContainer>);
+            })}
+          </SwipeableViews>
+        </div>
       </div>
     );
   }

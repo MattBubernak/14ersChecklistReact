@@ -13,7 +13,7 @@ import Dialog, {
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import IconButton from 'material-ui/IconButton';
 import Slide from 'material-ui/transitions/Slide';
-
+import AcUnit from 'material-ui-icons/AcUnit'
 
 import {
   FormLabel,
@@ -107,6 +107,7 @@ class MountainCheckDialog extends React.Component {
             <ModeEditIcon />
           </IconButton>
           <Dialog
+            fullWidth={true}
             transition={Slide}
             open={this.state.open}
             onClose={this.handleClose}>
@@ -115,16 +116,19 @@ class MountainCheckDialog extends React.Component {
               <DialogContent>
                 <FormControl component="fieldset">
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="winter"
-                          checked={this.state.winter}
-                          onChange={this.handleInputChange}
-                        />
-                      }
-                      label="winter"
-                    />
+                    <span>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="winter"
+                            checked={this.state.winter}
+                            onChange={this.handleInputChange}
+                          />
+                        }
+                        label="winter"
+                      />
+                      <AcUnit style={{'display': 'inline-flex', 'vertical-align': 'middle'}}/>
+                    </span>
                   </FormGroup>
                   <FormGroup>
                     <TextField
